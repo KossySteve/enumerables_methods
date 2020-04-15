@@ -87,25 +87,7 @@ module Enumerable
   end
 
   def multiply_els(array)
-    array.my_inject {|total, item| total * item}
-  end
-
-  def my_map
-    my_map_array = []
-    for item in self
-      item = yield(item)
-      my_map_array << item
-    end
-    my_map_array
-  end
-
-  def my_map(&proc)
-    my_map_array = []
-    for item in self
-      item = proc.call(item)
-      my_map_array << item
-    end
-    my_map_array
+    array.my_inject { |total, item| total * item }
   end
 
   def my_map(&proc)
@@ -123,5 +105,4 @@ module Enumerable
     end
     my_map_array
   end
-
 end
