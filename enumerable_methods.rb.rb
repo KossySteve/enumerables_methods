@@ -11,9 +11,8 @@ module Enumerable
 
   def my_each_with_index
     i = 0
-    n = self.size
-    while i < n
-      yield(self[i],i)
+    while i < self.size
+      yield(self[i], i)
       i += 1
     end
     self
@@ -22,12 +21,10 @@ module Enumerable
   def my_select
     my_select_array = []
     for item in self
-      if yield (item)
-        my_select_array << item
-      end
+      my_select_array << item if yield (item)
     end
-    return my_select_array
-   end
+    my_select_array
+  end
 
   def my_all?
     i = 0
@@ -130,5 +127,5 @@ end
     end
     return my_map_array
   end
-  
+
 end
