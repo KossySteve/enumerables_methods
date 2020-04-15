@@ -1,26 +1,27 @@
 module Enumerable
   def my_each
-    self.length.times { |i| yield self[i] }
-    self
+    array = self
+    array.size.times { |i| yield array[i] }
   end
 
   def my_each_with_index
-    self.length.times { |i| yield self[i], i }
+    array = self
+    array.length.times { |i| yield array[i], i }
   end
 
   def my_select
+    array = self
     my_select_array = []
-    for item in self
-      my_select_array << item if yield(item)
-    end
+    array.my_each { |item| my_select_array << item if yield(item) }
     my_select_array
   end
 
   def my_all?
+    array = self
     i = 0
     all = true
-    while i < self.length
-      unless yield(self[i])
+    while i < array.length
+      unless yield(array[i])
         all = false
         break
       end
@@ -28,12 +29,13 @@ module Enumerable
     end
     all
   end
-print [2,4,5].my_all?{|num| num%2==0 }
+
   def my_any?
+    array = self
     i = 0
     any_item = false
-    while i < self.length
-      if yield(self[i])
+    while i < array.length
+      if yield(array[i])
         any_item = true
         break
       end
@@ -43,10 +45,11 @@ print [2,4,5].my_all?{|num| num%2==0 }
   end
 
   def my_none?
+    array = self
     i = 0
     no_item = true
-    while i < self.length
-      if yield (self[i])
+    while i < array.length
+      if yield (array[i])
         no_item = false
         break
       end
@@ -56,8 +59,9 @@ print [2,4,5].my_all?{|num| num%2==0 }
   end
 
   def my_count
+    array = self
     i = 0
-    self.my_each { |item| i += 1 if yield(item) }
+    array.my_each { |item| i += 1 if yield(item) }
     i
   end
 
