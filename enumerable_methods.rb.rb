@@ -77,16 +77,18 @@ print [2,4,5].my_all?{|num| num%2==0 }
   def my_map(&proc)
     my_map_array = []
     if block_given?
-      for item in self
+      self.my_each do
         item = yield(item)
         my_map_array << item
       end
     else
-      for item in self
+      self.my_each do
         item = proc.call(item)
         my_map_array << item
       end
     end
     my_map_array
   end
+  #my_proc = Proc.new {|num| num * 2}
+  #puts [2,3,4].my_map(&my_proc)
 end
