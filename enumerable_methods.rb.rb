@@ -2,11 +2,13 @@ module Enumerable
   def my_each
     array = self
     array.size.times { |i| yield array[i] }
+    array
   end
 
   def my_each_with_index
     array = self
     array.length.times { |i| yield array[i], i }
+    array
   end
 
   def my_select
@@ -95,6 +97,4 @@ module Enumerable
     end
     my_map_array
   end
-  #my_proc = Proc.new {|num| num * 2}
-  #puts [2,3,4].my_map(&my_proc)
 end
