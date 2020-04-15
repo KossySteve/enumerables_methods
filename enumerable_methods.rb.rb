@@ -1,13 +1,13 @@
 module Enumerable
   def my_each
-    self.size.times { |i| yield self[i] }
+    self.length.times { |i| yield self[i] }
     self
   end
 
   def my_each_with_index
-    self.size.times { |i| yield self[i], i }
+    self.length.times { |i| yield self[i], i }
   end
-#print [2,4,5].my_each_with_index{|num, index| index}
+
   def my_select
     my_select_array = []
     for item in self
@@ -19,7 +19,7 @@ module Enumerable
   def my_all?
     i = 0
     all = true
-    while i < self.size
+    while i < self.length
       unless yield(self[i])
         all = false
         break
@@ -28,11 +28,11 @@ module Enumerable
     end
     all
   end
-
+print [2,4,5].my_all?{|num| num%2==0 }
   def my_any?
     i = 0
     any_item = false
-    while i < self.size
+    while i < self.length
       if yield(self[i])
         any_item = true
         break
@@ -45,7 +45,7 @@ module Enumerable
   def my_none?
     i = 0
     no_item = true
-    while i < self.size
+    while i < self.length
       if yield (self[i])
         no_item = false
         break
@@ -69,7 +69,6 @@ module Enumerable
     end
     injected
   end
-
 
   def multiply_els(array)
     array.my_inject { |total, item| total * item }
