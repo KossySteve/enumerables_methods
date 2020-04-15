@@ -5,9 +5,6 @@ This project involves creating and using closures and methods in Ruby. It is par
 
 - Ruby
 
-## Live Demo
-
-[Live Demo Link](https://rawcdn.githack.com/KossySteve/apple.com_page_clone/62f51c4289668cb6229866bc2f261d02fc23e7b0/index.html)
 
 ## Author
 
