@@ -1,22 +1,13 @@
 module Enumerable
   def my_each
-    i = 0
-    while i < self.size
-      yield(self[i])
-      i += 1
-    end
+    self.size.times { |i| yield self[i] }
     self
   end
 
   def my_each_with_index
-    i = 0
-    while i < self.size
-      yield(self[i], i)
-      i += 1
-    end
-    self
+    self.size.times { |i| yield self[i], i }
   end
-
+#print [2,4,5].my_each_with_index{|num, index| index}
   def my_select
     my_select_array = []
     for item in self
@@ -33,7 +24,7 @@ module Enumerable
         all = false
         break
       end
-    i += 1
+      i += 1
     end
     all
   end
@@ -78,7 +69,7 @@ module Enumerable
     end
     injected
   end
-  puts [2,4,5].my_inject{|total, num| total * num }
+
 
   def multiply_els(array)
     array.my_inject { |total, item| total * item }
