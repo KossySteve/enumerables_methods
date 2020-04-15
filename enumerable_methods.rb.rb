@@ -43,16 +43,15 @@ def my_all?
     i = 0
     all = true
   while i < self.size
-      if self[i] % 2 != 0
-        all = 
+      unless yield(self[i])
+        all = false
         break
       end
       i+=1
   end
   print all
 end
-puts [1,3,5,7].my_all?
-
+#puts [2,4,8,2].my_all? {|num| num % 2 != 0}
 def my_any?
     i = 0
     any_item = false
@@ -65,7 +64,7 @@ def my_any?
   end
   print any_item
 end
-#puts [1,3,2,5,7]. my_any?{|x| x%2 == 0}
+#puts [1,3,2,5,7]. my_any?{|x| x%2 != 0}
 
 def my_none?
     i = 0
@@ -79,7 +78,7 @@ def my_none?
   end
   print no_item
 end
-#puts [1,3,5,7].my_none?{|x| x%2 == 0}
+#puts [1,3,5,7].my_none?{|x| x%2 != 0}
 def my_count
   i = 0
   self.my_each {
@@ -90,7 +89,25 @@ def my_count
   }
   print i
 end
-#puts [1,3,4,5,7,2].my_count{ |x| x%2 == 0 }
+#puts [1,2,3,4,5,7,2].my_count{ |x| x%2 == 0 }
+
+def my_inject
+  i = 0
+  injected = 0
+  n = self.size - 1
+    n.times { |i|
+      self[i+1] = yield(self[i] , self[i.next])
+      injected = self[i+1]
+      i+=1
+    }
+    injected
+end
+
+def multiply_els(array)
+  array.my_inject {|total, item| total * item}
+end
+#puts multiply_els([2,4,5])
+
 
 def my_map
     my_map_array = []
@@ -100,28 +117,33 @@ def my_map
     end
     return my_map_array
 end
-#print [1,3,100,5,7,2].my_map
-def my_inject
+#print [1,3,100,5,7,2].my_map {|num| num * 2}
 
-  i = 0
-  injected = 0
-  n = self.size - 1
-    n.times { |i|
-      self[i+1] = yield(self[i] , self[i.next])
-      injected = self[i+1]
-      i+=1
-    }
-    print injected
-end
-#puts [2,4,5].my_inject
-#puts [2,4,5].my_inject {|total, num| total / num}
 
 def my_map_with_proc
     my_map_array = []
     for item in self
-    item =  yield (item)
+    item =  my_proc.call
     my_map_array << item
     end
     return my_map_array
 end
-#print [1,3,100,5,7,2].my_map
+my_proc = Proc.new {|num| num * 2}
+#print [1,3,100,5,7,2].my_map(&my_proc)
+
+
+def my_map_with_proc_or_block
+    my_map_array = []
+    for item in self
+      if block_given?
+        item =  yield (item)
+        my_map_array << item
+      else
+        item =  my_proc.call
+        my_map_array << item
+      end
+    return my_map_array
+  end
+end
+my_proc = Proc.new {|num| num * 2}
+#print [1,3,100,5,7,2].my_map(&my_proc)
