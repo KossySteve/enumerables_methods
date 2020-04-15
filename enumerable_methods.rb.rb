@@ -30,10 +30,10 @@ module Enumerable
     all = true
     while i < self.size
       unless yield(self[i])
-      all = false
-      break
+        all = false
+        break
       end
-    i+=1
+    i += 1
     end
     all
   end
@@ -46,7 +46,7 @@ module Enumerable
         any_item = true
         break
       end
-      i+=1
+      i += 1
     end
     any_item
   end
@@ -59,32 +59,26 @@ module Enumerable
         no_item = false
         break
       end
-      i+=1
+      i += 1
     end
     no_item
   end
 
   def my_count
     i = 0
-    self.my_each {|item|
-      if yield(item)
-        i+=1
-      end
-    }
+    self.my_each { |item| i += 1 if yield(item) }
     i
   end
 
   def my_inject
-    i = 0
     injected = 0
-    n = self.size - 1
-    n.times { |i|
-      self[i+1] = yield(self[i] , self[i.next])
-      injected = self[i+1]
-      i+=1
-    }
+    (self.size - 1).times do |i|
+      self[i + 1] = yield(self[i], self[i.next])
+      injected = self[i + 1]
+    end
     injected
   end
+  puts [2,4,5].my_inject{|total, num| total * num }
 
   def multiply_els(array)
     array.my_inject { |total, item| total * item }
