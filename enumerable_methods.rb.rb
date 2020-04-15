@@ -62,8 +62,9 @@ print [2,4,5].my_all?{|num| num%2==0 }
   end
 
   def my_inject
+    array = self
     injected = 0
-    (self.size - 1).times do |i|
+    (array.size - 1).times do |i|
       self[i + 1] = yield(self[i], self[i.next])
       injected = self[i + 1]
     end
@@ -76,13 +77,14 @@ print [2,4,5].my_all?{|num| num%2==0 }
 
   def my_map(&proc)
     my_map_array = []
+    array = self
     if block_given?
-      self.my_each do
+      array.my_each do
         item = yield(item)
         my_map_array << item
       end
     else
-      self.my_each do
+      array.my_each do
         item = proc.call(item)
         my_map_array << item
       end
