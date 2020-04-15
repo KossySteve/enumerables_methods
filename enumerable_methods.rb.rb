@@ -1,8 +1,7 @@
 module Enumerable
   def my_each
     i = 0
-    n = self.size
-    while i < n
+    while i < self.size
       yield(self[i])
       i += 1
     end
@@ -21,7 +20,7 @@ module Enumerable
   def my_select
     my_select_array = []
     for item in self
-      my_select_array << item if yield (item)
+      my_select_array << item if yield(item)
     end
     my_select_array
   end
@@ -36,9 +35,8 @@ module Enumerable
       end
     i+=1
     end
-    print all
+    all
   end
-
 
   def my_any?
     i = 0
@@ -50,8 +48,8 @@ module Enumerable
       end
       i+=1
     end
-  print any_item
-end
+    any_item
+  end
 
   def my_none?
     i = 0
@@ -63,18 +61,17 @@ end
       end
       i+=1
     end
-    print no_item
+    no_item
   end
 
   def my_count
     i = 0
-    self.my_each {
-      |item|
+    self.my_each {|item|
       if yield(item)
         i+=1
       end
     }
-    print i
+    i
   end
 
   def my_inject
@@ -96,36 +93,35 @@ end
   def my_map
     my_map_array = []
     for item in self
-      item =  yield(item)
+      item = yield(item)
       my_map_array << item
     end
-    return my_map_array
+    my_map_array
   end
-
 
   def my_map(&proc)
     my_map_array = []
     for item in self
-      item =  proc.call(item)
+      item = proc.call(item)
       my_map_array << item
     end
-    return my_map_array
+    my_map_array
   end
 
   def my_map(&proc)
     my_map_array = []
     if block_given?
       for item in self
-        item =  yield (item)
+        item = yield(item)
         my_map_array << item
       end
     else
       for item in self
-        item =  proc.call(item)
+        item = proc.call(item)
         my_map_array << item
       end
     end
-    return my_map_array
+    my_map_array
   end
 
 end
