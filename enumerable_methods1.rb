@@ -32,7 +32,7 @@ module Enumerable
     elsif !block_given?
       obj.my_each { |i| all = false if i == (false || nil) }
     else
-      obj.my_each { |i| all = false unless yield i}
+      obj.my_each { |i| all = false unless yield i }
     end
     all
   end
@@ -49,7 +49,7 @@ module Enumerable
     end
     any_item
   end
-puts [].my_any?
+
   def my_none?(pattern = nil)
     obj = self
     none = true
@@ -106,8 +106,8 @@ puts [].my_any?
     my_map_array = []
     return to_enum unless block_given?
 
-    obj.my_each do
-      |i| item = yield(i)
+    obj.my_each do |i|
+      item = yield(i)
       my_map_array << item
     end
     my_map_array
