@@ -1,85 +1,108 @@
 module Enumerable
   def my_each
+    return to_enum unless block_given?
     array = self
     array.size.times { |i| yield array[i] }
     array
   end
 
   def my_each_with_index
+    return to_enum unless block_given?
     array = self
     array.length.times { |i| yield array[i], i }
     array
   end
 
   def my_select
+    return to_enum unless block_given?
     array = self
     my_select_array = []
     array.my_each { |item| my_select_array << item if yield(item) }
     my_select_array
   end
 
-  def my_all?
-    array = self
-    i = 0
+  def my_all?(pattern = nil)
+    obj = self
     all = true
-    while i < array.length
-      unless yield(array[i])
-        all = false
-        break
-      end
-      i += 1
+    if pattern != nil
+      obj.each { |i| all = false unless pattern === i }
+    elsif !block_given?
+      obj.each { |i| all = false if (i == false or i == nil)}
+    else
+      obj.each { |i| all = false unless yield i}
     end
-    all
+    return all
   end
 
-  def my_any?
-    array = self
-    i = 0
+  def my_any?(pattern = nil)
+    obj = self
     any_item = false
-    while i < array.length
-      if yield(array[i])
-        any_item = true
-        break
+    if pattern != nil
+      obj.my_each { |i| any_item = true if pattern === i }
+    elsif !block_given?
+      obj.my_each { |i| any_item = true unless (i == false or i == nil)}
+    else
+      obj.my_each { |i|any_item = true if yield i }
+    end
+    return any_item
+  end
+
+  def my_none?(pattern = nil)
+    obj = self
+    none = true
+    if pattern != nil
+      obj.my_each { |i| none = false if pattern === i }
+    elsif !block_given?
+      obj.my_each { |i| none = false unless (i == false or i == nil)}
+    else
+      obj.my_each { |i| none = false if yield i }
+    end
+    return none
+  end
+
+  def my_count(item = nil)
+    obj = self
+    counter = 0
+    if item != nil
+      obj.my_each { |i| counter += 1 if item == i }
+    elsif !block_given?
+      obj.my_each { |i| counter += 1}
+    else
+      obj.my_each { |item| counter += 1 if yield(item) }
+    end
+    return counter
+  end
+
+  def my_inject(initial = 0, op =nil)
+    obj = self
+    if initial.class == (Symbol or String)
+      op = initial.to_s
+      (obj.size - 1).times do |i|
+        self[i.next] = self[i].send(op, self[i.next])
+        initial = self[i.next]
       end
-      i += 1
-    end
-    any_item
-  end
-
-  def my_none?
-    array = self
-    i = 0
-    no_item = true
-    while i < array.length
-      if yield (array[i])
-        no_item = false
-        break
+    elsif op.class == (Symbol or String)
+      obj.size.times do |i|
+        initial = initial.send(op.to_s, self[i])
       end
-      i += 1
+    elsif initial != 0
+      obj.size.times do |i|
+        initial = yield(initial, self[i])
+      end
+    else
+      (obj.size - 1).times do |i|
+        self[i.next] = yield(self[i], self[i.next])
+        initial = self[i.next]
+      end
     end
-    no_item
+    return initial
   end
-
-  def my_count
-    array = self
-    i = 0
-    array.my_each { |item| i += 1 if yield(item) }
-    i
+=begin
+  def multiply_els(obj)
+    obj.my_inject { |total, item| total * item }
   end
-
-  def my_inject
-    array = self
-    injected = 0
-    (array.size - 1).times do |i|
-      self[i + 1] = yield(self[i], self[i.next])
-      injected = self[i + 1]
-    end
-    injected
-  end
-
-  def multiply_els(array)
-    array.my_inject { |total, item| total * item }
-  end
+  multiply_els([2, 3, 4])
+  #puts [2, 3, 4].my_inject { |total, item| total * item }
 
   def my_map(&proc)
     my_map_array = []
@@ -97,4 +120,5 @@ module Enumerable
     end
     my_map_array
   end
+=end
 end

@@ -1,0 +1,5 @@
+#puts [2,"3",4].all?(Numeric)
+#puts ["A","V","E"].my_any?("V")
+#puts ["A","V","E"].my_none?(Numeric)
+#puts [1, 2, 4, 2].my_count(2)
+#puts [5, 2, 4].my_inject(1, :*)
