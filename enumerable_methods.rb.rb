@@ -3,14 +3,14 @@ module Enumerable
     return to_enum unless block_given?
     array = self
     array.size.times { |i| yield array[i] }
-    return array
+    array
   end
 
   def my_each_with_index
     return to_enum unless block_given?
     array = self
     array.length.times { |i| yield array[i], i }
-    return array
+    array
   end
 
   def my_select
@@ -18,7 +18,7 @@ module Enumerable
     array = self
     my_select_array = []
     array.my_each { |item| my_select_array << item if yield(item) }
-    return my_select_array
+    my_select_array
   end
 
   def my_all?(pattern = nil)
@@ -31,7 +31,7 @@ module Enumerable
     else
       obj.my_each { |i| all = false unless yield i}
     end
-    return all
+    all
   end
 
   def my_any?(pattern = nil)
@@ -44,7 +44,7 @@ module Enumerable
     else
       obj.my_each { |i|any_item = true if yield i }
     end
-    return any_item
+    any_item
   end
 
   def my_none?(pattern = nil)
@@ -57,7 +57,7 @@ module Enumerable
     else
       obj.my_each { |i| none = false if yield i }
     end
-    return none
+    none
   end
 
   def my_count(item = nil)
@@ -70,7 +70,7 @@ module Enumerable
     else
       obj.my_each { |item| counter += 1 if yield(item) }
     end
-    return counter
+    counter
   end
 
   def my_inject(initial = 0, op =nil)
@@ -85,7 +85,7 @@ module Enumerable
     else
       (obj.size - 1).times { |i| obj[i.next] = yield(obj[i], obj[i.next]); initial = obj[i.next] }
     end
-    return initial
+    initial
   end
 
   def multiply_els(obj)
@@ -97,7 +97,7 @@ module Enumerable
     my_map_array = []
     return to_enum unless block_given?
     obj.my_each { |i| item = yield(i); my_map_array << item}
-    return my_map_array
+    my_map_array
   end
 
   def my_map(&proc)
@@ -109,6 +109,6 @@ module Enumerable
     else
       obj.my_each { |i| item = proc.call(i); my_map_array << item}
     end
-    return my_map_array
+    my_map_array
   end
 end
