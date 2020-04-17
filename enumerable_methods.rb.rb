@@ -96,6 +96,7 @@ module Enumerable
     obj = self
     my_map_array = []
     return to_enum unless block_given?
+    
     obj.my_each { |i| item = yield(i); my_map_array << item}
     my_map_array
   end
