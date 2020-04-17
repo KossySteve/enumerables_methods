@@ -3,14 +3,14 @@ module Enumerable
     return to_enum unless block_given?
     array = self
     array.size.times { |i| yield array[i] }
-    array
+    return array
   end
 
   def my_each_with_index
     return to_enum unless block_given?
     array = self
     array.length.times { |i| yield array[i], i }
-    array
+    return array
   end
 
   def my_select
@@ -18,18 +18,18 @@ module Enumerable
     array = self
     my_select_array = []
     array.my_each { |item| my_select_array << item if yield(item) }
-    my_select_array
+    return my_select_array
   end
 
   def my_all?(pattern = nil)
     obj = self
     all = true
     if pattern != nil
-      obj.each { |i| all = false unless pattern === i }
+      obj.my_each { |i| all = false unless pattern === i }
     elsif !block_given?
-      obj.each { |i| all = false if (i == false or i == nil)}
+      obj.my_each { |i| all = false if (i == false or i == nil)}
     else
-      obj.each { |i| all = false unless yield i}
+      obj.my_each { |i| all = false unless yield i}
     end
     return all
   end
@@ -77,48 +77,38 @@ module Enumerable
     obj = self
     if initial.class == (Symbol or String)
       op = initial.to_s
-      (obj.size - 1).times do |i|
-        self[i.next] = self[i].send(op, self[i.next])
-        initial = self[i.next]
-      end
-    elsif op.class == (Symbol or String)
-      obj.size.times do |i|
-        initial = initial.send(op.to_s, self[i])
-      end
+      (obj.size - 1).times { |i| obj[i.next] = obj[i].send(op, obj[i.next]); initial = obj[i.next] }
+    elsif (initial != 0) && (op.class == (Symbol or String))
+      obj.size.times { |i| initial = initial.send(op.to_s, obj[i]) }
     elsif initial != 0
-      obj.size.times do |i|
-        initial = yield(initial, self[i])
-      end
+      obj.size.times { |i| initial = yield(initial, obj[i]) }
     else
-      (obj.size - 1).times do |i|
-        self[i.next] = yield(self[i], self[i.next])
-        initial = self[i.next]
-      end
+      (obj.size - 1).times { |i| obj[i.next] = yield(obj[i], obj[i.next]); initial = obj[i.next] }
     end
     return initial
   end
-=begin
+
   def multiply_els(obj)
     obj.my_inject { |total, item| total * item }
   end
-  multiply_els([2, 3, 4])
-  #puts [2, 3, 4].my_inject { |total, item| total * item }
+
+  def my_map
+    obj = self
+    my_map_array = []
+    return to_enum unless block_given?
+    obj.my_each { |i| item = yield(i); my_map_array << item}
+    return my_map_array
+  end
 
   def my_map(&proc)
+    return to_enum unless block_given?
     my_map_array = []
-    array = self
+    obj = self
     if block_given?
-      array.my_each do
-        item = yield(item)
-        my_map_array << item
-      end
+      obj.my_each { |i| item = yield(i); my_map_array << item}
     else
-      array.my_each do
-        item = proc.call(item)
-        my_map_array << item
-      end
+      obj.my_each { |i| item = proc.call(i); my_map_array << item}
     end
-    my_map_array
+    return my_map_array
   end
-=end
 end
