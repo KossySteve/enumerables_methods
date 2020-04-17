@@ -1,6 +1,7 @@
 module Enumerable
   def my_each
     return to_enum unless block_given?
+
     array = self
     array.size.times { |i| yield array[i] }
     array
@@ -8,6 +9,7 @@ module Enumerable
 
   def my_each_with_index
     return to_enum unless block_given?
+
     array = self
     array.length.times { |i| yield array[i], i }
     array
@@ -15,6 +17,7 @@ module Enumerable
 
   def my_select
     return to_enum unless block_given?
+
     array = self
     my_select_array = []
     array.my_each { |item| my_select_array << item if yield(item) }
@@ -24,7 +27,7 @@ module Enumerable
   def my_all?(pattern = nil)
     obj = self
     all = true
-    if pattern != nil
+    if !pattern.nil?
       obj.my_each { |i| all = false unless pattern === i }
     elsif !block_given?
       obj.my_each { |i| all = false if i == (false || nil) }
@@ -37,20 +40,20 @@ module Enumerable
   def my_any?(pattern = nil)
     obj = self
     any_item = false
-    if pattern != nil
+    if !pattern.nil?
       obj.my_each { |i| any_item = true if pattern === i }
     elsif !block_given?
-      obj.my_each { |i| any_item = true unless i == false or nil }
+      obj.my_each { |i| any_item = true unless i == false || i.nil? }
     else
-      obj.my_each { |i|any_item = true if yield i }
+      obj.my_each { |i| any_item = true if yield i }
     end
     any_item
   end
-
+puts [].my_any?
   def my_none?(pattern = nil)
     obj = self
     none = true
-    if pattern != nil
+    if !pattern.nil?
       obj.my_each { |i| none = false if pattern === i }
     elsif !block_given?
       obj.my_each { |i| none = false if i == true }
@@ -63,7 +66,7 @@ module Enumerable
   def my_count(item = nil)
     obj = self
     counter = 0
-    if !item == nil
+    if !item.nil?
       obj.my_each { |i| counter += 1 if item == i }
     elsif !block_given?
       obj.my_each { counter += 1 }
@@ -103,18 +106,28 @@ module Enumerable
     my_map_array = []
     return to_enum unless block_given?
 
-    obj.my_each { |i| item = yield(i); my_map_array << item}
+    obj.my_each do
+      |i| item = yield(i)
+      my_map_array << item
+    end
     my_map_array
   end
 
   def my_map(&proc)
     return to_enum unless block_given?
+
     my_map_array = []
     obj = self
     if block_given?
-      obj.my_each { |i| item = yield(i); my_map_array << item}
+      obj.my_each do |i|
+        item = yield(i)
+        my_map_array << item
+      end
     else
-      obj.my_each { |i| item = proc.call(i); my_map_array << item}
+      obj.my_each do |i|
+        item = proc.call(i)
+        my_map_array << item
+      end
     end
     my_map_array
   end
