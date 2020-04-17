@@ -28,7 +28,11 @@ module Enumerable
     obj = self
     all = true
     if !pattern.nil?
-      obj.my_each { |i| all = false unless pattern === i }
+      obj.my_each do |i|
+        if !(i.is_a?pattern || pattern =~ i) #|| !(obj.include? pattern)
+        all = false
+        end
+      end
     elsif !block_given?
       obj.my_each { |i| all = false if i == (false || nil) }
     else
