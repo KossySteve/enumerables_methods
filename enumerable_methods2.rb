@@ -32,18 +32,6 @@ module Enumerable
     obj.my_inject { |total, item| total * item }
   end
 
-  def my_map
-    obj = self
-    my_map_array = []
-    return to_enum unless block_given?
-
-    obj.my_each do |i|
-      item = yield(i)
-      my_map_array << item
-    end
-    my_map_array
-  end
-
   def my_map(&proc)
     return to_enum unless block_given?
 
