@@ -27,7 +27,7 @@ module Enumerable
     if pattern != nil
       obj.my_each { |i| all = false unless pattern === i }
     elsif !block_given?
-      obj.my_each { |i| all = false if (i == false or i == nil)}
+      obj.my_each { |i| all = false if i == (false || nil) }
     else
       obj.my_each { |i| all = false unless yield i}
     end
@@ -40,7 +40,7 @@ module Enumerable
     if pattern != nil
       obj.my_each { |i| any_item = true if pattern === i }
     elsif !block_given?
-      obj.my_each { |i| any_item = true unless (i == false or i == nil)}
+      obj.my_each { |i| any_item = true unless i == false or nil }
     else
       obj.my_each { |i|any_item = true if yield i }
     end
@@ -53,7 +53,7 @@ module Enumerable
     if pattern != nil
       obj.my_each { |i| none = false if pattern === i }
     elsif !block_given?
-      obj.my_each { |i| none = false unless (i == false or i == nil)}
+      obj.my_each { |i| none = false if i == true }
     else
       obj.my_each { |i| none = false if yield i }
     end
@@ -63,27 +63,33 @@ module Enumerable
   def my_count(item = nil)
     obj = self
     counter = 0
-    if item != nil
+    if !item == nil
       obj.my_each { |i| counter += 1 if item == i }
     elsif !block_given?
-      obj.my_each { |i| counter += 1}
+      obj.my_each { counter += 1 }
     else
-      obj.my_each { |item| counter += 1 if yield(item) }
+      obj.my_each { |i| counter += 1 if yield(i) }
     end
     counter
   end
 
-  def my_inject(initial = 0, op =nil)
+  def my_inject(initial = 0, opr = nil)
     obj = self
     if initial.class == (Symbol or String)
-      op = initial.to_s
-      (obj.size - 1).times { |i| obj[i.next] = obj[i].send(op, obj[i.next]); initial = obj[i.next] }
-    elsif (initial != 0) && (op.class == (Symbol or String))
-      obj.size.times { |i| initial = initial.send(op.to_s, obj[i]) }
+      opr = initial.to_s
+      (obj.size - 1).times do |i|
+        obj[i.next] = obj[i].send(opr, obj[i.next])
+        initial = obj[i.next]
+      end
+    elsif opr.class == (Symbol or String)
+      obj.size.times { |i| initial = initial.send(opr.to_s, obj[i]) }
     elsif initial != 0
       obj.size.times { |i| initial = yield(initial, obj[i]) }
     else
-      (obj.size - 1).times { |i| obj[i.next] = yield(obj[i], obj[i.next]); initial = obj[i.next] }
+      (obj.size - 1).times do |i|
+        obj[i.next] = yield(obj[i], obj[i.next])
+        initial = obj[i.next]
+      end
     end
     initial
   end
@@ -96,7 +102,7 @@ module Enumerable
     obj = self
     my_map_array = []
     return to_enum unless block_given?
-    
+
     obj.my_each { |i| item = yield(i); my_map_array << item}
     my_map_array
   end
