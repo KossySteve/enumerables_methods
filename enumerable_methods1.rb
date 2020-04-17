@@ -27,9 +27,11 @@ module Enumerable
   def my_all?(pattern = nil)
     obj = self
     all = true
+
     if !pattern.nil?
       obj.my_each do |i|
-        if !(i.is_a?pattern || pattern =~ i) #|| !(obj.include? pattern)
+        condition = pattern === i
+        unless  condition
         all = false
         end
       end
@@ -40,7 +42,7 @@ module Enumerable
     end
     all
   end
-
+                                           #=> true
   def my_any?(pattern = nil)
     obj = self
     any_item = false
