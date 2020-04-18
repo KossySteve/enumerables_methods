@@ -24,39 +24,39 @@ module Enumerable
     my_select_array
   end
 
-  def my_all?(pattern = nil)
+  def my_all? (pattern = nil)
     obj = self
     all = true
-    if !pattern.nil?
-      obj.my_each do |i|
-        all = false unless (i.is_a?pattern || pattern =~ i)
-      end
-    elsif !block_given?
+    if block_given?
+      obj.my_each { |i| all = false unless yield i }
+    elsif !block_given? and pattern.nil?
       obj.my_each { |i| all = false if i == (false || nil) }
     else
-      obj.my_each { |i| all = false unless yield i }
+      obj.my_each do |i|
+        all = false unless i.is_a?pattern || pattern =~ i
+      end
     end
     all
   end
-  
-  def my_any?(pattern = nil)
+
+  def my_any? (pattern = nil)
     obj = self
     any_item = false
-    if !pattern.nil?
-      obj.my_each { |i| any_item = true if (i.is_a?pattern || pattern =~ i) }
-    elsif !block_given?
+    if block_given?
+      obj.my_each { |i| any_item = true if yield i }
+    elsif !block_given? and pattern.nil?
       obj.my_each { |i| any_item = true unless i == false || i.nil? }
     else
-      obj.my_each { |i| any_item = true if yield i }
+      obj.my_each { |i| any_item = true if i.is_a?pattern || pattern =~ i }
     end
     any_item
   end
 
-  def my_none?(pattern = nil)
+  def my_none? (pattern = nil)
     obj = self
     none = true
     if !pattern.nil?
-      obj.my_each { |i| none = false if (i.is_a?pattern || pattern =~ i) }
+      obj.my_each { |i| none = false if i.is_a?pattern || pattern =~ i }
     elsif !block_given?
       obj.my_each { |i| none = false if i == true }
     else
