@@ -24,7 +24,7 @@ module Enumerable
     my_select_array
   end
 
-  def my_all? (pattern = nil)
+  def my_all?( pattern = 0 )
     obj = self
     all = true
     if block_given?
@@ -39,7 +39,7 @@ module Enumerable
     all
   end
 
-  def my_any? (pattern = nil)
+  def my_any?( pattern = 0 )
     obj = self
     any_item = false
     if block_given?
@@ -52,7 +52,7 @@ module Enumerable
     any_item
   end
 
-  def my_none? (pattern = nil)
+  def my_none?( pattern = 0)
     obj = self
     none = true
     if !pattern.nil?
