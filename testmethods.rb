@@ -12,4 +12,3 @@
 # print [2,3,4,5].my_map {|num| num * 2}
 # my_proc = Proc.new {|num| num * 2}
 # print [2,3,4].my_map(&my_proc)
-puts 2.include? 2

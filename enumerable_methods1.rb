@@ -1,3 +1,10 @@
+# frozen_string_literal: false
+
+# rubocop:disable Style/CaseEquality
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+
+# :nodoc:
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -28,10 +35,8 @@ module Enumerable
     obj = self
     all = true
     if !pattern.nil?
-      obj.my_each do |i|
-        all = false unless (i.is_a? pattern) or pattern =~ i
-      end
-    elsif !block_given? and pattern.nil?
+      obj.my_each { |i| all = false unless pattern === i }
+    elsif !block_given? && pattern.nil?
       obj.my_each { |i| all = false if i == (false || nil) }
     else
       obj.my_each { |i| all = false unless yield i }
@@ -43,8 +48,8 @@ module Enumerable
     obj = self
     any_item = false
     if !pattern.nil?
-      obj.my_each { |i| any_item = true if (i.is_a? pattern) || pattern =~ i }
-    elsif !block_given? and pattern.nil?
+      obj.my_each { |i| any_item = true if pattern === i }
+    elsif !block_given? && pattern.nil?
       obj.my_each { |i| any_item = true unless i == false || i.nil? }
     else
       obj.my_each { |i| any_item = true if yield i }
@@ -56,7 +61,7 @@ module Enumerable
     obj = self
     none = true
     if !pattern.nil?
-      obj.my_each { |i| none = false if (i.is_a? pattern) || pattern =~ i }
+      obj.my_each { |i| none = false if pattern === i }
     elsif !block_given?
       obj.my_each { |i| none = false if i == true }
     else
@@ -90,3 +95,6 @@ module Enumerable
     my_map_array
   end
 end
+# rubocop:enable Style/CaseEquality
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
