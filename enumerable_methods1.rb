@@ -27,13 +27,9 @@ module Enumerable
   def my_all?(pattern = nil)
     obj = self
     all = true
-
     if !pattern.nil?
       obj.my_each do |i|
-        condition = pattern === i
-        unless  condition
-        all = false
-        end
+        all = false unless (i.is_a?pattern || pattern =~ i)
       end
     elsif !block_given?
       obj.my_each { |i| all = false if i == (false || nil) }
@@ -42,12 +38,12 @@ module Enumerable
     end
     all
   end
-                                           #=> true
+  
   def my_any?(pattern = nil)
     obj = self
     any_item = false
     if !pattern.nil?
-      obj.my_each { |i| any_item = true if pattern === i }
+      obj.my_each { |i| any_item = true if (i.is_a?pattern || pattern =~ i) }
     elsif !block_given?
       obj.my_each { |i| any_item = true unless i == false || i.nil? }
     else
@@ -60,7 +56,7 @@ module Enumerable
     obj = self
     none = true
     if !pattern.nil?
-      obj.my_each { |i| none = false if pattern === i }
+      obj.my_each { |i| none = false if (i.is_a?pattern || pattern =~ i) }
     elsif !block_given?
       obj.my_each { |i| none = false if i == true }
     else
