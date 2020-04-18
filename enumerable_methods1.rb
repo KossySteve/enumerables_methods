@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+
 
 # rubocop:disable Style/CaseEquality
 # rubocop:disable Metrics/CyclomaticComplexity
