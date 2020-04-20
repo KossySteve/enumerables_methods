@@ -6,7 +6,7 @@ This project involves creating and using closures and methods in Ruby. It is par
 - Ruby
 
 ## How to test the method?
-- You can use codes from the the testmthods.rb file and run on your virtula machine
+- You can use codes from the the testmthods.rb file and run on your IDE.
 
 ## Author
 
