@@ -97,12 +97,10 @@ module Enumerable
 
   def my_inject(initial = 0, opr = nil)
     my_array = []
+    obj = self
     if self.class == Range
-      obj = self
       obj.each { |i| my_array << i }
       obj = my_array
-    else
-      obj = self
     end
     if initial.class == (Symbol or String)
       opr = initial.to_s
