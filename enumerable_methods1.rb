@@ -98,9 +98,8 @@ module Enumerable
   def my_inject(initial = 0, opr = nil)
     my_array = []
     if self.class == Range
-      for k in self
-        my_array << k
-      end
+      self.each {|i| my_array << i }
+      my_array
       obj = my_array
     else
       obj = self
