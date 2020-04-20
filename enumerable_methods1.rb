@@ -1,6 +1,8 @@
 # rubocop:disable Style/CaseEquality
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/MethodLength:
+# rubocop:disable Metrics/ModuleLength
 
 # :nodoc:
 module Enumerable
@@ -35,7 +37,7 @@ module Enumerable
     if !pattern.nil?
       obj.my_each { |i| all = false unless pattern === i }
     elsif !block_given? && pattern.nil?
-      obj.my_each { |i| all = false if i == false || i == nil }
+      obj.my_each { |i| all = false if i == false || i.nil? }
     else
       obj.my_each { |i| all = false unless yield i }
     end
@@ -81,7 +83,7 @@ module Enumerable
     counter
   end
 
-  def my_map
+  def my_mapp
     obj = self
     my_map_array = []
     return to_enum unless block_given?
@@ -96,12 +98,12 @@ module Enumerable
   def my_inject(initial = 0, opr = nil)
     my_array = []
     if self.class == Range
-      for i in self
-        my_array << i
+      for k in self
+        my_array << k
       end
       obj = my_array
     else
-        obj = self
+      obj = self
     end
     if initial.class == (Symbol or String)
       opr = initial.to_s
