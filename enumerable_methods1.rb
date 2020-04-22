@@ -1,7 +1,6 @@
 # rubocop:disable Style/CaseEquality
 # rubocop:disable Metrics/CyclomaticComplexity
 # rubocop:disable Metrics/PerceivedComplexity
-# rubocop:disable Metrics/MethodLength:
 # rubocop:disable Metrics/ModuleLength
 
 # :nodoc:
@@ -140,5 +139,4 @@ end
 # rubocop:enable Style/CaseEquality
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
-# rubocop:enable Metrics/MethodLength:
 # rubocop:enable Metrics/ModuleLength
