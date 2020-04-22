@@ -96,8 +96,9 @@ module Enumerable
   end
 
   def my_inject(initial = 0, opr = nil)
+    k = self
     obj = []
-    self.each {|i| obj << i}
+    k.each { |i| obj << i }
     if initial.class == Symbol
       opr = initial.to_s
       (obj.size - 1).times do |i|
