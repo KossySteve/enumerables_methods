@@ -19,3 +19,4 @@
 # a = Array.new(100) { rand(1...9) }
 # puts a.my_inject{ |memo, num| memo * num}
 # puts a.inject{ |memo, num| memo * num}
+# puts multiply_els([2, 3, 4])

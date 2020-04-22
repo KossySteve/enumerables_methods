@@ -82,18 +82,6 @@ module Enumerable
     counter
   end
 
-  def my_mapp
-    obj = self
-    my_map_array = []
-    return to_enum unless block_given?
-
-    obj.my_each do |i|
-      item = yield(i)
-      my_map_array << item
-    end
-    my_map_array
-  end
-
   def my_inject(initial = 0, opr = nil)
     k = self
     obj = []
@@ -134,6 +122,10 @@ module Enumerable
       end
     end
     my_map_array
+  end
+
+  def multiply_els(obj)
+    obj.my_inject { |total, item| total * item }
   end
 end
 # rubocop:enable Style/CaseEquality
