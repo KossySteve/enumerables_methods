@@ -25,4 +25,4 @@ end
 def multiply_els(obj)
   obj.my_inject { |total, item| total * item }
 end
-puts multiply_els([2,3,4])
+puts multiply_els([2, 3, 4])
